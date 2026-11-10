@@ -60,8 +60,6 @@ async function getAndPrintGitHubUserProfile(username) {
     <p>Public repos: ${profile.public_repos}</p>
 </section>`;
 
-    document.body.insertAdjacentHTML('beforeend', card);
-
     return card;
 }
 
@@ -74,13 +72,20 @@ window.addEventListener('DOMContentLoaded', () => {
     const searchButton = document.createElement('button');
     searchButton.textContent = 'Buscar';
 
-    searchButton.addEventListener('click', () => {
+    const resultDiv = document.createElement('div');
+    resultDiv.id = 'result';
+
+    searchButton.addEventListener('click', async () => {
         const username = searchInput.value.trim();
-        if (username) getAndPrintGitHubUserProfile(username);
+        if (username) {
+            const card = await getAndPrintGitHubUserProfile(username);
+            resultDiv.innerHTML = card;
+        }
     });
 
     document.body.appendChild(searchInput);
     document.body.appendChild(searchButton);
+    document.body.appendChild(resultDiv);
 });
 
 // 9.
